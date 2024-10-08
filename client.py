@@ -49,11 +49,26 @@ def get_book_by_id(id):
 
 
 def update_book(id):
-    pass
+    suffix = f"/book/{id}"
+    endpoint = BOOKS_API_URL + suffix
+    res = requests.put(endpoint)
+    if res.ok:
+        json_resp = res.json()
+        print_book(json_resp)
+    else:
+        print(f"Error: {res}")
 
 
 def delete_book(id):
-    pass
+    suffix = f"/book/{id}"
+    endpoint = BOOKS_API_URL + suffix
+    res = requests.delete(endpoint)
+    if res.ok:
+        json_res = res.json()
+        print(json_res)
+    else:
+        print(f"Error: {res}")
+        
 
 def main():
     log.info(f"Welcome to books catalog. App requests to: {BOOKS_API_URL}")
