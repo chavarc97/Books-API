@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from routes import router as book_router
 
 MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
-DB_NAME = os.getenv('MONGODB_DB_NAME', 'iteso')
+DB_NAME = os.getenv('MONGODB_DB_NAME', 'books')
 
 app = FastAPI()
 
