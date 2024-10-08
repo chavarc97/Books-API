@@ -55,3 +55,13 @@ def update_book(id: str, request: Request, book: Book_Update = Body(...)):
 
 
 # Delete a book by id
+@router.delete("/{id}", response_description="Delete a book") 
+def delete_book(id: str, request: Request, response: Response):
+    delete_res = request.app.database["books"].delete_one({"_id": id})
+    
+    if delete_res.deleted_count == 1:
+        response.status_code = status.HTTP_204_NO_CONTENT
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Libro con ID {id} no encontrado")
+
