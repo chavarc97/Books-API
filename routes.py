@@ -33,7 +33,25 @@ def find_book(id: str, request: Request):
 
 
 # Update a book by id
-
+@router.put("/{id}", response_description="Update a book by id", response_model=Book)
+def update_book(id: str, request: Request, book: Book_Update = Body(...)):
+    # convert the book to a dictionary and remove unwanted keys
+    book_data = {k: v for k, v in book.model_dump().items() if v is not None}
+    # check if the book_data is not empty
+    if len(book_data) >= 1:
+        # if book_data is not empty, update the book in the database
+        update_res = request.app.database["books"].update_one({"_id": id}, {"set": book_data})
+        
+        # check if the book was updated successfully
+        if update_res.modified_count == 1:
+            updated_book = request.app.database["books"].find_one({"_id": id})
+            if updated_book:
+                return updated_book
+            
+        if (existing_book := request.app.database["books"].find_one({"_id": id})) is not None:
+            return existing_book
+        
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Book with ID {id}, not found")
 
 
 # Delete a book by id
