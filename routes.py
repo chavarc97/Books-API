@@ -40,7 +40,7 @@ def update_book(id: str, request: Request, book: Book_Update = Body(...)):
     # check if the book_data is not empty
     if len(book_data) >= 1:
         # if book_data is not empty, update the book in the database
-        update_res = request.app.database["books"].update_one({"_id": id}, {"set": book_data})
+        update_res = request.app.database["books"].update_one({"_id": id}, {"$set": book_data})
         
         # check if the book was updated successfully
         if update_res.modified_count == 1:
