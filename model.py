@@ -37,18 +37,17 @@ class Book(BaseModel):
 
 
 class Book_Update(BaseModel):
-    id: Optional[str]
-    title: Optional[str]
-    authors: Optional[list]
-    average_rating: Optional[float]
-    isbn: Optional[str]
-    isbn13: Optional[str]
-    language_code: Optional[str]
-    num_pages: Optional[int]
-    ratings_count: Optional[int]
-    text_reviews_count: Optional[int]
-    publication_date: Optional[str]
-    publisher: Optional[str]
+    title: Optional[str] = None
+    authors: Optional[List[str]] = None
+    average_rating: Optional[float] = None
+    isbn: Optional[str] = None
+    isbn13: Optional[str] = None
+    language_code: Optional[str] = None
+    num_pages: Optional[int] = None
+    ratings_count: Optional[int] = None
+    text_reviews_count: Optional[int] = None
+    publication_date: Optional[str] = None
+    publisher: Optional[str] = None
     
     class Config:
         schema_extra = {

@@ -47,7 +47,7 @@ def get_book_by_id(id):
     else:
         print(f"Error: {response}")
 
-
+# UPDATE AND DELETE ACTIONS -------------------------------
 def update_book(id):
     suffix = f"/book/{id}"
     endpoint = BOOKS_API_URL + suffix
@@ -68,7 +68,7 @@ def delete_book(id):
         print(json_res)
     else:
         print(f"Error: {res}")
-        
+# ---------------------------------------------------------      
 
 def main():
     log.info(f"Welcome to books catalog. App requests to: {BOOKS_API_URL}")
