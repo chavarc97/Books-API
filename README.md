@@ -41,8 +41,8 @@ pip install -r requirements.txt
 
 ```
 
-  
 ## 2
+
 ### Initialize mongodb instance & run the indexes script
 
 ``` bash
