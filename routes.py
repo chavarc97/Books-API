@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-from fastapi import APIRouter, Body, Request, Response, HTTPException, status
+from fastapi import APIRouter, Body, Request, Response, HTTPException, status, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from typing import List
+from typing import List, Optional
 
 router = APIRouter()
 from model import Book, Book_Update
@@ -19,9 +19,31 @@ def create_book(request: Request, book: Book = Body(...)):
 
 
 # Get all books 
+# Query parameters: rating, num_pages, title, limit, skip 
 @router.get("/", response_description="Get all books", response_model=List[Book])
-def list_books(request: Request, rating: float = 0):
-    books = list(request.app.database["books"].find({"average_rating": {"$gte": rating}}))
+def list_books(
+    request: Request,
+    rating: float = Query(0, description="Minimum average rating"),
+    num_pages: Optional[int] = Query(None, description="Number of pages"),
+    title: Optional[str] = Query(None, description="Book title (partial match)"),
+    limit: int = Query(10, ge=1, le=100, description="Number of books to return"),
+    skip: int = Query(0, ge=0, description="Number of books to skip"),
+):
+    # Create a query dictionary based on the query parameters
+    query = {"average_rating": {"$gte": rating}}
+    if num_pages is not None:
+        query["num_pages"] = num_pages
+    if title is not None:
+        query["$text"] = {"$search": title}
+        
+    # Get the books from the database based on the query
+    books = list(
+        request.app.database["books"]
+        .find(query)
+        .sort("average_rating", -1)
+        .skip(skip)
+        .limit(limit)
+    )
     return books
 
 
